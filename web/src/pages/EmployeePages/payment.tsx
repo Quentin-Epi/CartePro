@@ -1,6 +1,5 @@
 import { useState } from "react";
 import QRCodeComponent from "../../components/QrCode";
-import { Header } from "../../components/Header";
 import { Watermark } from "../../components/Watermark";
 
 export default function EmployeePaymentPage() {

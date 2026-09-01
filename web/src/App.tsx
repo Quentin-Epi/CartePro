@@ -3,8 +3,6 @@ import Login from "./pages/login"
 import Signup from "./pages/signup"
 import PartnerPaymentPage from "./pages/PartnerPages/payment"
 import EmployeePaymentPage from "./pages/EmployeePages/payment"
-import EmployeeBalancePage from "./pages/EmployeePages/ballance"
-import EmployeePartnersPage from "./pages/EmployeePages/partners"
 import { Header } from "./components/Header"
 
 export default function App() {
@@ -14,10 +12,9 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/EmployeePages/payment" element={<><Header /><EmployeePaymentPage /></>} />
-        <Route path="/EmployeePages/balance" element={<><Header /><EmployeeBalancePage /></>} />
-        <Route path="/EmployeePages/partners" element={<><Header /><EmployeePartnersPage /></>} />
         <Route path="/PartnerPages/payment" element={<><Header /><PartnerPaymentPage /></>} />
-        <Route path="*" element={<><Navigate to="/login" replace /></>} />
+        {/* Redirection par défaut vers le login */}
+        <Route path="*" element={<><Navigate to="/EmployeePages/payment" replace /></>} />
       </Routes>
     </BrowserRouter>
   )
