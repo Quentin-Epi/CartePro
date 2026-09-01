@@ -10,8 +10,7 @@ export function Watermark({
   text = "DOCUMENT DE SIMULATION - NE PAS UTILISER COMME OFFICIEL",
 }: WatermarkProps) {
   return (
-    <div className="relative min-h-screen w-full overflow-hidden">
-      {}
+    <div className="relative min-h-screen w-full overflow-hidden z-[-1]">
       <div className="bg-amber-500/90 text-amber-950 font-bold text-center text-xs md:text-sm py-1.5 px-4 shadow-sm sticky top-0 z-50 backdrop-blur-xs flex items-center justify-center gap-2 border-b border-amber-600/30">
         <svg
           xmlns="http://www.w3.org/2000/svg"
