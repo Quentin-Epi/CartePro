@@ -1,0 +1,59 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: cartepro-backend
+    restart: unless-stopped
+    working_dir: /app
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+      - cargo_cache:/usr/local/cargo/registry
+      - target_cache:/app/target
+    environment:
+      DATABASE_URL: postgres://cartepro:cartepro@postgres:5432/cartepro
+      RUST_LOG: debug
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  frontend:
+    image: node:22-alpine
+    container_name: cartepro-frontend
+    working_dir: /app
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./web:/app
+      - node_modules:/app/node_modules
+    command: sh -c "npm ci && npm run dev -- --host 0.0.0.0"
+    environment:
+      NODE_ENV: development
+    depends_on:
+      - backend
+
+  postgres:
+    image: postgres:18
+    container_name: cartepro-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: cartepro
+      POSTGRES_PASSWORD: cartepro
+      POSTGRES_DB: cartepro
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cartepro -d cartepro"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  postgres_dev_data:
+  cargo_cache:
+  target_cache:
+  node_modules:
