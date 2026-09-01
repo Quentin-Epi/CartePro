@@ -14,8 +14,11 @@ log = "0.4"
 # Web
 actix = "0.13"
 actix-files = "0.7.0"
-actix-web = "4.14"
+actix-web = { version = "4.14", features = ["openssl"] }
 actix-ws = "0.4"
+
+# HTTPS
+openssl = "0.10.81"
 
 # Serialization
 serde = { version = "1.0", features = ["derive"] }

@@ -4,14 +4,38 @@ use actix_web::{App, HttpServer, web};
 mod api;
 mod config;
 mod db;
+mod entities;
 mod models;
 
 pub type Result<T> = anyhow::Result<T>;
 
 use actix_files::NamedFile;
 use actix_web::HttpRequest;
+use openssl::ssl::{SslAcceptor, SslFiletype, SslMethod};
 
-pub async fn spa(req: HttpRequest) -> actix_web::Result<NamedFile> {
+fn parse_args(_addr: &mut String, _port: &mut u16) -> Option<bool> {
+    let mut args = std::env::args();
+    let (mut i, len) = (0, args.len());
+    let mut arg = args.next();
+    while arg.is_some() {
+        match arg?.as_str() {
+            "--ssl" => return Some(true),
+            "-b" | "--bind" => {
+                if len - i < 2 {
+                    log::error!("Bad Usage: bind needs 2 arguments (address & port)");
+                    return None;
+                }
+                args.next();
+                args.next();
+            }
+            _ => {}
+        }
+        arg = args.next();
+    }
+    Some(false)
+}
+
+async fn spa(req: HttpRequest) -> actix_web::Result<NamedFile> {
     let path = req.path();
 
     if path.starts_with("/api/") {
@@ -26,8 +50,8 @@ async fn main() -> Result<()> {
     dotenvy::dotenv().ok();
     env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
 
-    let addr = std::env::var("SERVER_HOST").unwrap_or(config::SERVER_HOST.to_string());
-    let port = std::env::var("SERVER_PORT")
+    let mut addr = std::env::var("SERVER_HOST").unwrap_or(config::SERVER_HOST.to_string());
+    let mut port = std::env::var("SERVER_PORT")
         .unwrap_or_default()
         .parse::<u16>()
         .unwrap_or(config::SERVER_PORT);
@@ -39,14 +63,31 @@ async fn main() -> Result<()> {
         .await
         .map_err(|e| anyhow::anyhow!("Error connecting to Database: {e}"))?;
 
-    Ok(HttpServer::new(move || {
+    let mut builder = SslAcceptor::mozilla_intermediate(SslMethod::tls()).unwrap();
+    builder
+        .set_private_key_file("key.pem", SslFiletype::PEM)
+        .unwrap();
+    builder.set_certificate_chain_file("cert.pem").unwrap();
+
+    let ssl =
+        parse_args(&mut addr, &mut port).ok_or(anyhow::anyhow!("Error parsing arguments."))?;
+
+    log::info!("Listening {addr}:{port}...");
+
+    let server = HttpServer::new(move || {
         App::new()
             .app_data(web::Data::new(db.clone()))
             .configure(api::configure)
             .service(Files::new("/assets", "./web/dist/assets"))
             .default_service(web::route().to(spa))
-    })
-    .bind((addr, port))?
-    .run()
-    .await?)
+    });
+
+    let bind = if ssl {
+        server.bind_openssl((addr, port), builder)?
+    } else {
+        server.bind((addr, port))?
+    };
+
+    bind.run().await?;
+    Ok(())
 }
