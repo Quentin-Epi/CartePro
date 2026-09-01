@@ -8,3 +8,5 @@
 !.env.example
 
 docker-compose.override.yml
+
+*.pem
