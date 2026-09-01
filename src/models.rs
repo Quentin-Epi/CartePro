@@ -1,5 +1,3 @@
-use std::time::{SystemTime, UNIX_EPOCH};
-
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
@@ -21,25 +19,27 @@ pub enum State {
 
 #[derive(Serialize, Deserialize, Clone)]
 pub struct User {
-    id: Uuid,
-    mail: String,
-    name: String,
-    pass: String,
-    role: Role,
-    state: State,
-    created_at: u64,
+    pub id: Uuid,
+    pub mail: String,
+    pub name: String,
+    pub password_hash: String,
+    pub role: Role,
+    pub state: State,
+    pub created_at: u64,
 }
 
 impl User {
-    pub async fn new(mail: String, name: String, pass: String, role: Role) -> Result<Self> {
+    pub fn new(mail: String, name: String, password_hash: String, role: Role) -> Result<Self> {
         let id = Uuid::new_v4();
-        let created_at = SystemTime::now().duration_since(UNIX_EPOCH)?.as_secs();
+        let created_at = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)?
+            .as_secs();
 
         Ok(Self {
             id,
             mail,
             name,
-            pass,
+            password_hash,
             role,
             state: State::WaitingActivation,
             created_at,

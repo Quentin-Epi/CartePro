@@ -13,6 +13,7 @@ services:
       - cargo_cache:/usr/local/cargo/registry
       - target_cache:/app/target
     environment:
+      SERVER_PORT: 8080
       DATABASE_URL: postgres://cartepro:cartepro@postgres:5432/cartepro
       RUST_LOG: debug
     depends_on:
@@ -46,6 +47,7 @@ services:
       - "5432:5432"
     volumes:
       - postgres_dev_data:/var/lib/postgresql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U cartepro -d cartepro"]
       interval: 5s
