@@ -1,5 +1,7 @@
-import { Link } from "react-router-dom"
-import { Button } from "../components/ui/button"
+import { useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
+import { api } from "../api"
+import { Button } from "./ui/button"
 import {
   Card,
   CardContent,
@@ -38,7 +40,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
               <div className="grid grid-cols-2 gap-3">
                 <FieldLabel
                   htmlFor="role-employee"
-                  className="has-[:checked]:border-primary/40 has-[:checked]:bg-primary/5"
+                  className="has-checked:border-primary/40 has-checked:bg-primary/5"
                 >
                   <Field orientation="horizontal">
                     <input
@@ -88,7 +90,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                 required
               />
               <FieldDescription>
-                We&apos;ll use this to contact you. We will not share your email
+                We'll use this to contact you. We will not share your email
                 with anyone else.
               </FieldDescription>
             </Field>
