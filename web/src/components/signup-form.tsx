@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom"
-import { Button } from "@/components/ui/button"
+import { Button } from "../components/ui/button"
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "../components/ui/card"
 
 import {
   Field,
@@ -17,8 +17,8 @@ import {
   FieldLegend,
   FieldSet,
   FieldTitle,
-} from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
+} from "../components/ui/field"
+import { Input } from "../components/ui/input"
 
 export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
   return (
@@ -83,7 +83,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
               <Input
                 id="email"
                 type="email"
-                placeholder="m@example.com"
+                placeholder="m..example.com"
                 required
               />
               <FieldDescription>
@@ -109,10 +109,10 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
               <Field>
                 <Button type="submit">Create Account</Button>
                 <FieldDescription className="text-center">
-                Don&apos;t have an account?{" "}
-                <Link to="/login" className="underline font-medium text-primary">
-                Sign in
-                </Link>
+                  Don&apos;t have an account?{" "}
+                  <Link to="/login" className="underline font-medium text-primary">
+                    Sign in
+                  </Link>
                 </FieldDescription>
               </Field>
             </FieldGroup>

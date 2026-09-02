@@ -1,4 +1,4 @@
-import { Watermark } from "@/components/Watermark"
+import { Watermark } from "../../components/Watermark"
 
 export default function PartnerPaymentPage() {
   return (
