@@ -11,8 +11,10 @@ export function Watermark({
 }: WatermarkProps) {
   return (
     <div className="relative w-full overflow-hidden">
-      {/* 1. Bannière d'avertissement (sans z-index excessif) */}
-      <div className="bg-amber-500/90 text-amber-950 font-bold text-center text-xs md:text-sm py-1.5 px-4 shadow-xs flex items-center justify-center gap-2 border-b border-amber-600/30">
+      <div
+        title={text}
+        className="bg-amber-500/90 text-amber-950 font-bold text-center text-xs md:text-sm py-1.5 px-4 shadow-xs flex items-center justify-center gap-2 border-b border-amber-600/30"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-4 w-4 shrink-0"
@@ -30,22 +32,6 @@ export function Watermark({
         <span>ENVIRONNEMENT DE SIMULATION — Les montants affichés n&apos;ont aucune valeur légale</span>
       </div>
 
-      {/* 2. Filigrane discret placé SOUS l'interface (z-0) et sans interaction possible */}
-      <div
-        className="pointer-events-none fixed inset-0 z-[-100000000000000] select-none overflow-hidden opacity-[0.04] flex flex-wrap items-center justify-center gap-16 p-12 max-h-screen"
-        aria-hidden="true"
-      >
-        {Array.from({ length: 12 }).map((_, i) => (
-          <div
-            key={i}
-            className="-rotate-45 text-xl md:text-3xl font-black tracking-widest text-foreground uppercase whitespace-nowrap"
-          >
-            {text}
-          </div>
-        ))}
-      </div>
-
-      {/* 3. Contenu applicatif (au-dessus du filigrane z-10) */}
       <div className="relative z-10 w-full">{children}</div>
     </div>
   )
