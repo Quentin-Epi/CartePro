@@ -6,7 +6,12 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+<<<<<<< HEAD
 } from "../components/ui/card"
+=======
+} from "@/components/ui/card"
+
+>>>>>>> afe057b (feat: better header + logo)
 import {
   Field,
   FieldDescription,
