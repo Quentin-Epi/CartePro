@@ -49,6 +49,10 @@ async fn spa(req: HttpRequest) -> actix_web::Result<NamedFile> {
         return Err(actix_web::error::ErrorNotFound("not found"));
     }
 
+    if path.starts_with("/public/") && let Some((_, p)) = path.trim_start_matches('/').split_once('/') {
+        return Ok(NamedFile::open(format!("./web/dist/{p}"))?);
+    }
+
     Ok(NamedFile::open("./web/dist/index.html")?)
 }
 
