@@ -50,7 +50,7 @@ function isValidSiren(value: string): boolean {
 
 export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
   const navigate = useNavigate()
-  const [role, setRole] = useState<"employee" | "partner">("employee")
+  const [role, setRole] = useState<"Manant" | "Partner">("Manant")
   const [name, setName] = useState("")
   const [mail, setMail] = useState("")
   const [password, setPassword] = useState("")
@@ -70,7 +70,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
       return
     }
 
-    if (role === "partner" && !isValidSiren(siren)) {
+    if (role === "Partner" && !isValidSiren(siren)) {
       setError("Le SIREN saisi n'est pas valide.")
       return
     }
@@ -86,7 +86,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
           name,
           password,
           role,
-          siren: role === "partner" ? Number(siren) : undefined,
+          siren: role === "Partner" ? Number(siren) : undefined,
         }),
       })
 
@@ -113,18 +113,18 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
               <FieldLegend variant="label">Vous êtes</FieldLegend>
               <div className="grid grid-cols-2 gap-3">
                 <FieldLabel
-                  htmlFor="role-employee"
+                  htmlFor="role-Manant"
                   className="has-[:checked]:border-primary/40 has-[:checked]:bg-primary/5"
                 >
                   <Field orientation="horizontal">
                     <input
-                      id="role-employee"
+                      id="role-Manant"
                       type="radio"
                       name="role"
-                      value="employee"
+                      value="Manant"
                       defaultChecked
-                      checked={role === "employee"}
-                      onChange={() => setRole("employee")}
+                      checked={role === "Manant"}
+                      onChange={() => setRole("Manant")}
                       required
                       className="size-4 accent-primary"
                     />
@@ -134,17 +134,17 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                   </Field>
                 </FieldLabel>
                 <FieldLabel
-                  htmlFor="role-partner"
+                  htmlFor="role-Partner"
                   className="has-[:checked]:border-primary/40 has-[:checked]:bg-primary/5"
                 >
                   <Field orientation="horizontal">
                     <input
-                      id="role-partner"
+                      id="role-Partner"
                       type="radio"
                       name="role"
-                      value="partner"
-                      checked={role === "partner"}
-                      onChange={() => setRole("partner")}
+                      value="Partner"
+                      checked={role === "Partner"}
+                      onChange={() => setRole("Partner")}
                       required
                       className="size-4 accent-primary"
                     />
@@ -155,7 +155,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                 </FieldLabel>
               </div>
             </FieldSet>
-            {role === "partner" && (
+            {role === "Partner" && (
               <Field>
                 <FieldLabel htmlFor="siren">SIREN</FieldLabel>
                 <Input

@@ -4,14 +4,9 @@ WORKDIR /app
 
 RUN cargo install cargo-watch
 
-COPY Cargo.toml Cargo.lock ./
-
-RUN mkdir src \
-  && echo 'fn main() {}' > src/main.rs \
-  && cargo build \
-  && rm -rf src
-
 COPY . .
+
+RUN cargo build
 
 EXPOSE 8080
 
