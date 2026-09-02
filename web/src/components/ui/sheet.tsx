@@ -1,8 +1,8 @@
 import * as React from "react"
 import { Dialog as SheetPrimitive } from "@base-ui/react/dialog"
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { cn } from "../../lib/utils"
+import { Button } from "../../components/ui/button"
 import { XIcon } from "lucide-react"
 
 function Sheet({ ...props }: SheetPrimitive.Root.Props) {
@@ -12,7 +12,7 @@ function Sheet({ ...props }: SheetPrimitive.Root.Props) {
 function SheetTrigger({ ...props }: SheetPrimitive.Trigger.Props) {
   return <SheetPrimitive.Trigger data-slot="sheet-trigger" {...props} />
 }
- 
+
 function SheetClose({ ...props }: SheetPrimitive.Close.Props) {
   return <SheetPrimitive.Close data-slot="sheet-close" {...props} />
 }

@@ -1,20 +1,20 @@
 import { Link } from "react-router-dom"
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { cn } from "../lib/utils"
+import { Button } from "../components/ui/button"
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "../components/ui/card"
 import {
   Field,
   FieldDescription,
   FieldGroup,
   FieldLabel,
-} from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
+} from "../components/ui/field"
+import { Input } from "../components/ui/input"
 
 export function LoginForm({
   className,
@@ -37,7 +37,7 @@ export function LoginForm({
                 <Input
                   id="email"
                   type="email"
-                  placeholder="m@example.com"
+                  placeholder="m..example.com"
                   required
                 />
               </Field>
@@ -56,10 +56,10 @@ export function LoginForm({
               <Field>
                 <Button type="submit">Login</Button>
                 <FieldDescription className="text-center">
-                Don&apos;t have an account?{" "}
-                <Link to="/signup" className="underline font-medium text-primary">
-                Sign up
-                </Link>
+                  Don&apos;t have an account?{" "}
+                  <Link to="/signup" className="underline font-medium text-primary">
+                    Sign up
+                  </Link>
                 </FieldDescription>
               </Field>
             </FieldGroup>
