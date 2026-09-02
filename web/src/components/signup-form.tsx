@@ -1,5 +1,7 @@
-import { Link } from "react-router-dom"
-import { Button } from "../components/ui/button"
+import { useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
+import { api } from "../api"
+import { Button } from "./ui/button"
 import {
   Card,
   CardContent,
@@ -9,9 +11,13 @@ import {
 } from "../components/ui/card"
 import {
   Field,
+  FieldContent,
   FieldDescription,
   FieldGroup,
   FieldLabel,
+  FieldLegend,
+  FieldSet,
+  FieldTitle,
 } from "../components/ui/field"
 import { Input } from "../components/ui/input"
 
@@ -27,6 +33,48 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
       <CardContent>
         <form>
           <FieldGroup>
+            <FieldSet>
+              <FieldLegend variant="label">Vous êtes</FieldLegend>
+              <div className="grid grid-cols-2 gap-3">
+                <FieldLabel
+                  htmlFor="role-employee"
+                  className="has-checked:border-primary/40 has-checked:bg-primary/5"
+                >
+                  <Field orientation="horizontal">
+                    <input
+                      id="role-employee"
+                      type="radio"
+                      name="role"
+                      value="employee"
+                      defaultChecked
+                      required
+                      className="size-4 accent-primary"
+                    />
+                    <FieldContent>
+                      <FieldTitle>Employé</FieldTitle>
+                    </FieldContent>
+                  </Field>
+                </FieldLabel>
+                <FieldLabel
+                  htmlFor="role-partner"
+                  className="has-[:checked]:border-primary/40 has-[:checked]:bg-primary/5"
+                >
+                  <Field orientation="horizontal">
+                    <input
+                      id="role-partner"
+                      type="radio"
+                      name="role"
+                      value="partner"
+                      required
+                      className="size-4 accent-primary"
+                    />
+                    <FieldContent>
+                      <FieldTitle>Partenaire</FieldTitle>
+                    </FieldContent>
+                  </Field>
+                </FieldLabel>
+              </div>
+            </FieldSet>
             <Field>
               <FieldLabel htmlFor="name">Full Name</FieldLabel>
               <Input id="name" type="text" placeholder="John Doe" required />
@@ -40,7 +88,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                 required
               />
               <FieldDescription>
-                We&apos;ll use this to contact you. We will not share your email
+                We'll use this to contact you. We will not share your email
                 with anyone else.
               </FieldDescription>
             </Field>
