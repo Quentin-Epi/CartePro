@@ -5,5 +5,6 @@ CREATE TABLE users (
     password_hash TEXT NOT NULL,
     role VARCHAR(32) NOT NULL,
     state VARCHAR(32) NOT NULL,
-    created_at BIGINT NOT NULL
+    created_at BIGINT NOT NULL,
+    siren INT2 UNIQUE
 );

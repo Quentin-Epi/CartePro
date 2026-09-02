@@ -31,6 +31,7 @@ fn parse_args(_addr: &mut String, _port: &mut u16) -> Option<bool> {
             _ => {}
         }
         arg = args.next();
+        i += 1;
     }
     Some(false)
 }
