@@ -9,16 +9,18 @@ import {
   CardHeader,
   CardTitle,
 } from "../components/ui/card"
+
 import {
   Field,
   FieldContent,
   FieldDescription,
   FieldGroup,
   FieldLabel,
-  FieldLegend,
   FieldSet,
+  FieldLegend,
   FieldTitle,
 } from "../components/ui/field"
+
 import { Input } from "../components/ui/input"
 
 export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {

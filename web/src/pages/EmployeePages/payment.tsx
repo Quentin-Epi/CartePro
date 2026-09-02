@@ -8,8 +8,8 @@ export default function EmployeePaymentPage() {
   return (
     <Watermark text="SIMULATION PAYMENT">
       <div>
-        <main className=" m-25 flex items-center justify-center">
-          <div className="p-4 bg-muted rounded-lg shadow-lg">
+        <main className="m-25 flex items-center justify-center">
+          <div className="p-4 bg-gray-200 rounded-lg shadow-lg">
             <QRCodeComponent value={url} size={300} />
           </div>
         </main>

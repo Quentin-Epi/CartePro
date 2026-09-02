@@ -1,4 +1,4 @@
-import MediaCard from "@/components/ui/mediacard";
+import MediaCard from "../../components/ui/mediacard";
 import "../../assets/css/global.css";
 
 const partners = [
