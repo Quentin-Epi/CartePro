@@ -15,8 +15,8 @@ export function Header() {
         <div className="flex items-center">
           <a className="block shrink-0 p-2" href="/">
             <img
-              src="/image.png"
-              alt="CartePro"
+              src="/favicon.png"
+              alt="Ticket Tout"
               className="h-15 w-15"
             />
           </a>
