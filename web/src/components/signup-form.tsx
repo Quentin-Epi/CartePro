@@ -1,6 +1,4 @@
-import { useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
-import { api } from "../api"
+import { Link } from "react-router-dom"
 import { Button } from "./ui/button"
 import {
   Card,
@@ -59,7 +57,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                 </FieldLabel>
                 <FieldLabel
                   htmlFor="role-partner"
-                  className="has-[:checked]:border-primary/40 has-[:checked]:bg-primary/5"
+                  className="has-checked:border-primary/40 has-checked:bg-primary/5"
                 >
                   <Field orientation="horizontal">
                     <input
