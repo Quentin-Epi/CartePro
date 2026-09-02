@@ -6,6 +6,7 @@ use uuid::Uuid;
 use crate::{
     db::{get_one, insert},
     entities::user::{self as User},
+    models::Role,
 };
 
 #[derive(Deserialize)]
@@ -19,6 +20,7 @@ pub struct AuthResponse {
     pub id: Uuid,
     pub mail: String,
     pub name: String,
+    pub role: Role,
 }
 
 #[post("/login")]
@@ -35,6 +37,7 @@ pub async fn login(
                     id: user.id,
                     mail: user.mail.clone(),
                     name: user.name.clone(),
+                    role: user.role.into(),
                 })
             } else {
                 HttpResponse::Unauthorized().body("Wrong password.")
@@ -50,6 +53,8 @@ pub struct RegisterRequest {
     pub mail: String,
     pub name: String,
     pub password: String,
+    pub role: Role,
+    pub siren: Option<i16>,
 }
 
 #[post("/register")]
@@ -65,11 +70,23 @@ pub async fn register(
         Err(e) => return HttpResponse::InternalServerError().body(e.to_string()),
     }
 
+    let role = match body.role {
+        Role::Admin => return HttpResponse::BadRequest().body("Wrong role."),
+        r => {
+            if r == Role::Partner && body.siren.is_none() {
+                return HttpResponse::BadRequest().body("Missing 'siren'.");
+            } else {
+                r
+            }
+        }
+    };
+
     let user = match crate::models::User::new(
         body.mail.clone(),
         body.name.clone(),
         body.password.clone(),
-        crate::models::Role::Manant,
+        role,
+        body.siren,
     ) {
         Ok(user) => user,
         Err(e) => {
@@ -84,6 +101,7 @@ pub async fn register(
             id: user.id,
             mail: user.mail,
             name: user.name,
+            role: user.role.into(),
         }),
         Err(e) => HttpResponse::InternalServerError().body(e.to_string()),
     }

@@ -26,10 +26,17 @@ pub struct User {
     pub role: Role,
     pub state: State,
     pub created_at: u64,
+    pub siren: Option<i16>,
 }
 
 impl User {
-    pub fn new(mail: String, name: String, password_hash: String, role: Role) -> Result<Self> {
+    pub fn new(
+        mail: String,
+        name: String,
+        password_hash: String,
+        role: Role,
+        siren: Option<i16>,
+    ) -> Result<Self> {
         let id = Uuid::new_v4();
         let created_at = std::time::SystemTime::now()
             .duration_since(std::time::UNIX_EPOCH)?
@@ -43,6 +50,7 @@ impl User {
             role,
             state: State::WaitingActivation,
             created_at,
+            siren,
         })
     }
 }

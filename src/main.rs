@@ -13,7 +13,7 @@ use actix_files::NamedFile;
 use actix_web::HttpRequest;
 use openssl::ssl::{SslAcceptor, SslFiletype, SslMethod};
 
-fn parse_args(_addr: &mut String, _port: &mut u16) -> Option<bool> {
+fn parse_args(addr: &mut String, port: &mut u16) -> Option<bool> {
     let mut args = std::env::args();
     let (mut i, len) = (0, args.len());
     let mut arg = args.next();
@@ -25,12 +25,19 @@ fn parse_args(_addr: &mut String, _port: &mut u16) -> Option<bool> {
                     log::error!("Bad Usage: bind needs 2 arguments (address & port)");
                     return None;
                 }
-                args.next();
-                args.next();
+                if let Some(a) = args.next() {
+                    *addr = a;
+                }
+                if let Some(p) = args.next()
+                    && let Ok(pn) = p.parse::<u16>()
+                {
+                    *port = pn;
+                }
             }
             _ => {}
         }
         arg = args.next();
+        i += 1;
     }
     Some(false)
 }
