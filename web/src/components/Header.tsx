@@ -11,7 +11,7 @@ import {
 export function Header() {
   return (
     <header className="border-b bg-background">
-      <div className="flex h-20 w-full items-center px-4 sm:px-6 lg:px-8">
+      <div className="flex h-26 w-full items-center px-4 sm:px-6 lg:px-8">
         <div className="flex items-center">
           <a className="block shrink-0 p-2" href="/">
             <img
@@ -46,9 +46,9 @@ export function Header() {
               <li>
                 <a
                   className="text-muted-foreground transition hover:text-primary"
-                  href="#"
+                  href="/EmployeePages/partners"
                 >
-                  Settings
+                  Partners
                 </a>
               </li>
             </ul>
@@ -71,15 +71,16 @@ export function Header() {
 
           {/* Mobile menu */}
           <Sheet>
-            <SheetTrigger asChild>
-              <button
-                className="inline-flex h-10 w-10 items-center justify-center rounded-md bg-muted text-muted-foreground transition hover:bg-muted/70 md:hidden"
-                aria-label="Ouvrir le menu"
-              >
-                <Menu className="h-6 w-6" />
-              </button>
-            </SheetTrigger>
-
+            <SheetTrigger
+              render={
+                <button
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-md bg-muted text-muted-foreground transition hover:bg-muted/70 md:hidden"
+                  aria-label="Ouvrir le menu"
+                >
+                  <Menu className="h-6 w-6" />
+                </button>
+              }
+            />
             <SheetContent
               side="right"
               className="w-full bg-background sm:max-w-sm"
@@ -90,9 +91,9 @@ export function Header() {
 
               <nav className="ml-4 mt-8 flex flex-col gap-6 text-lg">
                 <a href="/">Accueil</a>
-                <a href="/services">Services</a>
-                <a href="/tarifs">Tarifs</a>
-                <a href="/contact">Contact</a>
+                <a href="/EmployeePages/balance">Balance</a>
+                <a href="/EmployeePages/payment">Payment</a>
+                <a href="/EmployeePages/partners">Partners</a>
               </nav>
             </SheetContent>
           </Sheet>
