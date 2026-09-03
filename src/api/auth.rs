@@ -32,16 +32,18 @@ pub async fn login(
 
     match get_one(&**db, query).await {
         Ok(Some(user)) => {
-            if user.password_hash == body.password {
-                HttpResponse::Ok().json(AuthResponse {
-                    id: user.id,
-                    mail: user.mail.clone(),
-                    name: user.name.clone(),
-                    role: user.role.into(),
-                })
-            } else {
-                HttpResponse::Unauthorized().body("Wrong password.")
+            if user.password_hash != body.password {
+                return HttpResponse::Unauthorized().body("Wrong password.");
             }
+            if user.state != User::State::Active {
+                return HttpResponse::Forbidden().body("Compte en attente de validation.");
+            }
+            HttpResponse::Ok().json(AuthResponse {
+                id: user.id,
+                mail: user.mail.clone(),
+                name: user.name.clone(),
+                role: user.role.into(),
+            })
         }
         Ok(None) => HttpResponse::Unauthorized().finish(),
         Err(e) => HttpResponse::InternalServerError().body(e.to_string()),
