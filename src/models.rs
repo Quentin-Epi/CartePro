@@ -26,7 +26,7 @@ pub struct User {
     pub role: Role,
     pub state: State,
     pub created_at: u64,
-    pub siren: Option<i16>,
+    pub siren: Option<i32>,
 }
 
 impl User {
@@ -35,7 +35,7 @@ impl User {
         name: String,
         password_hash: String,
         role: Role,
-        siren: Option<i16>,
+        siren: Option<i32>,
     ) -> Result<Self> {
         let id = Uuid::new_v4();
         let created_at = std::time::SystemTime::now()

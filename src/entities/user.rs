@@ -16,7 +16,7 @@ pub struct Model {
     pub state: State,
 
     pub created_at: i64,
-    pub siren: Option<i16>,
+    pub siren: Option<i32>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize)]

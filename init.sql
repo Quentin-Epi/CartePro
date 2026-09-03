@@ -6,5 +6,5 @@ CREATE TABLE users (
     role VARCHAR(32) NOT NULL,
     state VARCHAR(32) NOT NULL,
     created_at BIGINT NOT NULL,
-    siren INT2 UNIQUE
+    siren INT4 UNIQUE
 );

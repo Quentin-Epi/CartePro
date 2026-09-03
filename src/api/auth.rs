@@ -54,7 +54,7 @@ pub struct RegisterRequest {
     pub name: String,
     pub password: String,
     pub role: Role,
-    pub siren: Option<i16>,
+    pub siren: Option<i32>,
 }
 
 #[post("/register")]
