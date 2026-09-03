@@ -86,7 +86,6 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
           name,
           password,
           role,
-          siren: role === "Partner" ? Number(siren) : undefined,
         }),
       })
 

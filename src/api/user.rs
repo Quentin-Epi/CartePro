@@ -8,14 +8,6 @@ use sea_orm::{
 };
 use serde::Deserialize;
 
-#[derive(Deserialize)]
-pub struct PutRequest {
-    pub mail: Option<String>,
-    pub name: Option<String>,
-    pub password: Option<String>,
-    pub siren: Option<Option<i32>>,
-}
-
 #[get("/user")]
 pub async fn get(req: HttpRequest, db: web::Data<DatabaseConnection>) -> impl Responder {
     let Some(auth) = req.headers().get("Authorization") else {
@@ -41,6 +33,13 @@ pub async fn get(req: HttpRequest, db: web::Data<DatabaseConnection>) -> impl Re
         Ok(None) => HttpResponse::NotFound().finish(),
         Err(e) => HttpResponse::InternalServerError().body(e.to_string()),
     }
+}
+
+#[derive(Deserialize)]
+pub struct PutRequest {
+    pub mail: Option<String>,
+    pub name: Option<String>,
+    pub password: Option<String>,
 }
 
 #[patch("/user")]
@@ -87,9 +86,6 @@ pub async fn put(
                     User::Column::Password,
                     sea_orm::Value::String(Some(password.to_owned())),
                 );
-            }
-            if let Some(siren) = &body.siren {
-                active_model.set(User::Column::Siren, sea_orm::Value::Int(siren.to_owned()));
             }
             match update::<User::Entity, _>(db.get_ref(), active_model).await {
                 Ok(user) => HttpResponse::Ok().json(user),
