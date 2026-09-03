@@ -24,6 +24,7 @@ services:
       POSTGRES_DB: tickettout
     volumes:
       - postgres_prod_data:/var/lib/postgresql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U tickettout -d tickettout"]
       interval: 5s
