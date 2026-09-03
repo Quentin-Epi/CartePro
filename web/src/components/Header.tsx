@@ -40,7 +40,7 @@ export function Header() {
                   className="text-muted-foreground transition hover:text-primary"
                   href="/EmployeePages/balance"
                 >
-                  Wallet
+                  Porte-monnaie
                 </a>
               </li>
 
@@ -49,7 +49,7 @@ export function Header() {
                   className="text-muted-foreground transition hover:text-primary"
                   href="/EmployeePages/payment"
                 >
-                  Payment
+                  Transaction
                 </a>
               </li>
 
@@ -58,7 +58,7 @@ export function Header() {
                   className="text-muted-foreground transition hover:text-primary"
                   href="/EmployeePages/partners"
                 >
-                  Partners
+                  Partenaires
                 </a>
               </li>
             </ul>
@@ -74,9 +74,9 @@ export function Header() {
               Se déconnecter
             </button>
 
-            <span className="px-2 py-2.5 text-xl font-medium text-primary">
+            <a href="/EmployeePages/settings" className="px-2 py-2.5 text-xl font-medium text-primary">
               {user?.name ?? "Invité"}
-            </span>
+            </a>
           </div>
 
           <Sheet>
