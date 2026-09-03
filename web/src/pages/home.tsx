@@ -74,46 +74,17 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Visuel : carte factice */}
-          <div className="relative mx-auto w-full max-w-sm">
-            <div className="rounded-2xl bg-gradient-to-br from-primary to-c-bleu-fonce p-6 text-primary-foreground shadow-xl">
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium opacity-80">Ticket Tout</span>
-                <img src="/favicon.svg" alt="" className="h-7 w-7 opacity-90" />
-              </div>
-              <div className="mt-10 space-y-1">
-                <p className="text-xs uppercase tracking-wide opacity-70">
-                  Solde disponible
-                </p>
-                <p className="text-3xl font-semibold">128,50 €</p>
-              </div>
-              <div className="mt-8 flex items-end justify-between">
-                <div className="space-y-1">
-                  <p className="text-[10px] uppercase tracking-wide opacity-70">
-                    Titulaire
-                  </p>
-                  <p className="text-sm font-medium">Jean Dupont</p>
-                </div>
-                <div className="grid h-14 w-14 grid-cols-3 grid-rows-3 gap-0.5 rounded bg-primary-foreground/10 p-1.5">
-                  {Array.from({ length: 9 }).map((_, i) => (
-                    <span
-                      key={i}
-                      className={
-                        i % 2 === 0
-                          ? "rounded-[1px] bg-primary-foreground/80"
-                          : "rounded-[1px] bg-primary-foreground/20"
-                      }
-                    />
-                  ))}
-                </div>
-              </div>
-            </div>
+          <div className="relative mx-auto w-full max-w-md">
+            <img
+              src="/public/carte_tickettout.png"
+              alt="Carte Ticket Tout"
+              className="w-full rounded-2xl shadow-xl"
+            />
             <div className="absolute -right-4 -top-4 -z-10 h-24 w-24 rounded-full bg-brand-accent/15" />
             <div className="absolute -bottom-6 -left-6 -z-10 h-28 w-28 rounded-full bg-c-accent-2/15" />
           </div>
         </section>
 
-        {/* Points clés */}
         <section className="shrink-0 border-t border-border bg-c-gris-clair">
           <div className="mx-auto grid w-full max-w-6xl gap-6 px-6 py-6 sm:grid-cols-3">
             {features.map((feature) => (
