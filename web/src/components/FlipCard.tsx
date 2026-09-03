@@ -3,6 +3,9 @@ import { useState } from "react";
 import QRCodeComponent from "./QrCode";
 
 interface BankCardProps {
+  name: string;
+  firstname: string;
+  creation_date: string;
   paymentUrl: string;
 }
 
@@ -73,7 +76,7 @@ export default function BankCard({ paymentUrl }: BankCardProps) {
               </div>
 
               <img
-                src="/tickettout_blue_logo.png"
+                src="/public/tickettout_blue_logo.png"
                 alt="TicketTout"
                 className="
                   h-[clamp(18px,5vw,40px)]
