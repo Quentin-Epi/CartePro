@@ -22,7 +22,7 @@ pub struct User {
     pub id: Uuid,
     pub mail: String,
     pub name: String,
-    pub password_hash: String,
+    pub password: String,
     pub role: Role,
     pub state: State,
     pub created_at: u64,
@@ -33,7 +33,7 @@ impl User {
     pub fn new(
         mail: String,
         name: String,
-        password_hash: String,
+        password: String,
         role: Role,
         siren: Option<i32>,
     ) -> Result<Self> {
@@ -51,7 +51,7 @@ impl User {
             id,
             mail,
             name,
-            password_hash,
+            password,
             role,
             state,
             created_at,

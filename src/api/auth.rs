@@ -32,7 +32,7 @@ pub async fn login(
 
     match get_one(&**db, query).await {
         Ok(Some(user)) => {
-            if user.password_hash != body.password {
+            if user.password != body.password {
                 return HttpResponse::Unauthorized().body("Wrong password.");
             }
             if user.state != User::State::Active {

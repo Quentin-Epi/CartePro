@@ -11,7 +11,7 @@ pub struct Model {
     #[sea_orm(unique)]
     pub mail: String,
     pub name: String,
-    pub password_hash: String,
+    pub password: String,
 
     pub role: Role,
     pub state: State,
@@ -57,7 +57,7 @@ impl From<Model> for crate::models::User {
             id: model.id,
             mail: model.mail,
             name: model.name,
-            password_hash: model.password_hash,
+            password: model.password,
             role: model.role.into(),
             state: model.state.into(),
             created_at: model.created_at as u64,
@@ -72,7 +72,7 @@ impl From<crate::models::User> for Model {
             id: user.id,
             mail: user.mail,
             name: user.name,
-            password_hash: user.password_hash,
+            password: user.password,
             role: user.role.into(),
             state: user.state.into(),
             created_at: user.created_at as i64,

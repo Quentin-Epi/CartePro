@@ -10,6 +10,8 @@ pub fn configure(cfg: &mut web::ServiceConfig) {
         web::scope("/api")
             .service(health::health)
             .service(echo::echo)
+            .service(user::get)
+            .service(user::put)
             .configure(auth::configure),
     );
 }
