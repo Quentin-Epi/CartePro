@@ -8,7 +8,6 @@ import {
 import { Separator } from "../../components/ui/separator"
 import { Watermark } from "../../components/Watermark"
 
-// Placeholder — à remplacer par le solde réel une fois l'API branchée.
 const PLACEHOLDER_BALANCE = "128,50 €"
 
 type Transaction = {
@@ -19,7 +18,6 @@ type Transaction = {
   direction: "debit" | "credit"
 }
 
-// Placeholders — à remplacer par l'historique réel une fois l'API branchée.
 const PLACEHOLDER_TRANSACTIONS: Transaction[] = [
   { id: "1", label: "Déjeuner — Le Bistrot", date: "31 août 2026", amount: "-12,50 €", direction: "debit" },
   { id: "2", label: "Rechargement du compte", date: "28 août 2026", amount: "+50,00 €", direction: "credit" },
@@ -34,7 +32,6 @@ export default function BalancePage() {
       <main className="mx-auto flex w-full max-w-3xl flex-col gap-6 p-6 md:p-10">
         <h1 className="text-2xl font-semibold">Mon solde</h1>
 
-        {/* Solde disponible */}
         <Card>
           <CardHeader>
             <CardDescription>Solde disponible</CardDescription>
@@ -42,7 +39,6 @@ export default function BalancePage() {
           </CardHeader>
         </Card>
 
-        {/* Historique des transactions */}
         <Card>
           <CardHeader>
             <CardTitle>Historique des transactions</CardTitle>
@@ -64,8 +60,8 @@ export default function BalancePage() {
                     <span
                       className={
                         transaction.direction === "credit"
-                          ? "font-medium text-emerald-600 dark:text-emerald-400"
-                          : "font-medium text-red-600 dark:text-red-400"
+                          ? "font-medium text-positive"
+                          : "font-medium text-negative"
                       }
                     >
                       {transaction.amount}

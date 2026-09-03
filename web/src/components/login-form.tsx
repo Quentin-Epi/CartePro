@@ -1,5 +1,8 @@
-import { Link } from "react-router-dom"
+import { useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
 import { cn } from "../lib/utils"
+import { api } from "../api"
+import { setUser, type AuthUser } from "../auth"
 import { Button } from "../components/ui/button"
 import {
   Card,
@@ -11,54 +14,101 @@ import {
 import {
   Field,
   FieldDescription,
+  FieldError,
   FieldGroup,
   FieldLabel,
 } from "../components/ui/field"
 import { Input } from "../components/ui/input"
 
+const AFTER_LOGIN_ROUTE = "/EmployeePages/balance"
+
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const navigate = useNavigate()
+  const [mail, setMail] = useState("")
+  const [password, setPassword] = useState("")
+  const [error, setError] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    setError(null)
+    setLoading(true)
+
+    try {
+      const user = await api<AuthUser>("/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mail, password }),
+      })
+
+      setUser(user)
+      navigate(AFTER_LOGIN_ROUTE, { replace: true })
+    } catch (err) {
+      if (err instanceof Error && err.message.includes("401")) {
+        setError("E-mail ou mot de passe incorrect.")
+      } else {
+        setError("Connexion impossible. Réessayez plus tard.")
+      }
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader>
-          <CardTitle>Login to your account</CardTitle>
+          <CardTitle>Connexion à votre compte</CardTitle>
           <CardDescription>
-            Enter your email below to login to your account
+            Saisissez votre e-mail pour vous connecter
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
+          <form onSubmit={handleSubmit}>
             <FieldGroup>
               <Field>
-                <FieldLabel htmlFor="email">Email</FieldLabel>
+                <FieldLabel htmlFor="email">Adresse e-mail</FieldLabel>
                 <Input
                   id="email"
                   type="email"
-                  placeholder="m..example.com"
+                  placeholder="jean@exemple.com"
+                  autoComplete="email"
+                  value={mail}
+                  onChange={(e) => setMail(e.target.value)}
                   required
                 />
               </Field>
               <Field>
                 <div className="flex items-center">
-                  <FieldLabel htmlFor="password">Password</FieldLabel>
+                  <FieldLabel htmlFor="password">Mot de passe</FieldLabel>
                   <a
                     href="#"
                     className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
                   >
-                    Forgot your password?
+                    Mot de passe oublié ?
                   </a>
                 </div>
-                <Input id="password" type="password" required />
+                <Input
+                  id="password"
+                  type="password"
+                  autoComplete="current-password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
               </Field>
+              {error && <FieldError>{error}</FieldError>}
               <Field>
-                <Button type="submit">Login</Button>
+                <Button type="submit" disabled={loading}>
+                  {loading ? "Connexion…" : "Se connecter"}
+                </Button>
                 <FieldDescription className="text-center">
-                  Don&apos;t have an account?{" "}
+                  Vous n&apos;avez pas de compte ?{" "}
                   <Link to="/signup" className="underline font-medium text-primary">
-                    Sign up
+                    Créer un compte
                   </Link>
                 </FieldDescription>
               </Field>

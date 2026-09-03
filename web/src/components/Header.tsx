@@ -1,5 +1,7 @@
 import { Menu } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
+import { clearUser, getUser } from "../auth";
 import {
   Sheet,
   SheetContent,
@@ -9,6 +11,14 @@ import {
 } from "./ui/sheet";
 
 export function Header() {
+  const navigate = useNavigate();
+  const user = getUser();
+
+  function handleLogout() {
+    clearUser();
+    navigate("/login", { replace: true });
+  }
+
   return (
     <header className="border-b bg-background">
       <div className="flex h-20 w-full items-center px-4 sm:px-6 lg:px-8">
@@ -57,19 +67,18 @@ export function Header() {
         <div className="ml-auto flex items-center gap-4">
 
           <div className="hidden items-center gap-4 sm:flex">
-            <a
+            <button
+              onClick={handleLogout}
               className="block rounded-md border border-primary/40 px-5 py-2.5 text-xl font-medium text-primary transition hover:bg-primary/5 hover:border-primary/60"
-              href="#"
             >
-              Account
-            </a>
+              Se déconnecter
+            </button>
 
             <span className="px-2 py-2.5 text-xl font-medium text-primary">
-              User Name
+              {user?.name ?? "Invité"}
             </span>
           </div>
 
-          {/* Mobile menu */}
           <Sheet>
             <SheetTrigger
               render={
@@ -91,9 +100,15 @@ export function Header() {
 
               <nav className="ml-4 mt-8 flex flex-col gap-6 text-lg">
                 <a href="/">Accueil</a>
-                <a href="/EmployeePages/balance">Balance</a>
+                <a href="/EmployeePages/balance">Porte-monaie</a>
                 <a href="/EmployeePages/payment">Payment</a>
-                <a href="/EmployeePages/partners">Partners</a>
+                <a href="/EmployeePages/partners">Parteners</a>
+                <button
+                  onClick={handleLogout}
+                  className="text-left text-primary"
+                >
+                  Se déconnecter
+                </button>
               </nav >
             </SheetContent >
           </Sheet >

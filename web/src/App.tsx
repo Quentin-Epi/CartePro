@@ -1,4 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
+import type { ReactNode } from "react"
+import { isLoggedIn } from "./auth"
+import Home from "./pages/home"
 import Login from "./pages/login"
 import Signup from "./pages/signup"
 import PartnerPaymentPage from "./pages/PartnerPages/payment"
@@ -7,17 +10,37 @@ import EmployeeBalancePage from "./pages/EmployeePages/ballance"
 import EmployeePartnersPage from "./pages/EmployeePages/partners"
 import { Header } from "./components/Header"
 
+function RequireAuth({ children }: { children: ReactNode }) {
+  if (!isLoggedIn()) {
+    return <Navigate to="/login" replace />
+  }
+  return <>{children}</>
+}
+
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/EmployeePages/payment" element={<><Header /><EmployeePaymentPage /></>} />
-        <Route path="/EmployeePages/balance" element={<><Header /><EmployeeBalancePage /></>} />
-        <Route path="/EmployeePages/partners" element={<><Header /><EmployeePartnersPage /></>} />
-        <Route path="/PartnerPages/payment" element={<><Header /><PartnerPaymentPage /></>} />
-        <Route path="*" element={<><Navigate to="/login" replace /></>} />
+        <Route
+          path="/EmployeePages/payment"
+          element={<RequireAuth><Header /><EmployeePaymentPage /></RequireAuth>}
+        />
+        <Route
+          path="/EmployeePages/balance"
+          element={<RequireAuth><Header /><EmployeeBalancePage /></RequireAuth>}
+        />
+        <Route
+          path="/EmployeePages/partners"
+          element={<RequireAuth><Header /><EmployeePartnersPage /></RequireAuth>}
+        />
+        <Route
+          path="/PartnerPages/payment"
+          element={<RequireAuth><Header /><PartnerPaymentPage /></RequireAuth>}
+        />
+        <Route path="*" element={<><Navigate to="/" replace /></>} />
       </Routes>
     </BrowserRouter>
   )
