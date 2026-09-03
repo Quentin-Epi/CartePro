@@ -32,11 +32,8 @@ pub async fn login(
 
     match get_one(&**db, query).await {
         Ok(Some(user)) => {
-            if user.password_hash != body.password {
+            if user.password != body.password {
                 return HttpResponse::Unauthorized().body("Wrong password.");
-            }
-            if user.state != User::State::Active {
-                return HttpResponse::Forbidden().body("Compte en attente de validation.");
             }
             HttpResponse::Ok().json(AuthResponse {
                 id: user.id,
@@ -56,7 +53,6 @@ pub struct RegisterRequest {
     pub name: String,
     pub password: String,
     pub role: Role,
-    pub siren: Option<i32>,
 }
 
 #[post("/register")]
@@ -74,13 +70,7 @@ pub async fn register(
 
     let role = match body.role {
         Role::Admin => return HttpResponse::BadRequest().body("Wrong role."),
-        r => {
-            if r == Role::Partner && body.siren.is_none() {
-                return HttpResponse::BadRequest().body("Missing 'siren'.");
-            } else {
-                r
-            }
-        }
+        r => r,
     };
 
     let user = match crate::models::User::new(
@@ -88,7 +78,6 @@ pub async fn register(
         body.name.clone(),
         body.password.clone(),
         role,
-        body.siren,
     ) {
         Ok(user) => user,
         Err(e) => {

@@ -68,9 +68,10 @@ where
     E: EntityTrait,
     C: ConnectionTrait,
     E::ActiveModel: ActiveModelTrait<Entity = E>,
+    E::ActiveModel: std::marker::Send,
     E::Model: IntoActiveModel<E::ActiveModel>,
 {
-    E::update(model).exec(db).await
+    model.update(db).await
 }
 
 pub async fn delete<E, C>(db: &C, model: E::ActiveModel) -> Result<DeleteResult, DbErr>
