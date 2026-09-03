@@ -8,6 +8,7 @@ import PartnerPaymentPage from "./pages/PartnerPages/payment"
 import EmployeePaymentPage from "./pages/EmployeePages/payment"
 import EmployeeBalancePage from "./pages/EmployeePages/ballance"
 import EmployeePartnersPage from "./pages/EmployeePages/partners"
+import EmployeeSettingsPage from "./pages/EmployeePages/settings"
 import { Header } from "./components/Header"
 
 function RequireAuth({ children }: { children: ReactNode }) {
@@ -35,6 +36,10 @@ export default function App() {
         <Route
           path="/EmployeePages/partners"
           element={<RequireAuth><Header /><EmployeePartnersPage /></RequireAuth>}
+        />
+        <Route
+          path="/EmployeePages/settings"
+          element={<RequireAuth><Header/><EmployeeSettingsPage /></RequireAuth>}
         />
         <Route
           path="/PartnerPages/payment"
