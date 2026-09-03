@@ -3,6 +3,7 @@ use actix_web::web;
 mod auth;
 mod echo;
 mod health;
+mod user;
 
 pub fn configure(cfg: &mut web::ServiceConfig) {
     cfg.service(
