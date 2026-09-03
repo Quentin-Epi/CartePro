@@ -3,14 +3,16 @@ import React from "react"
 interface WatermarkProps {
   children: React.ReactNode
   text?: string
+  className?: string
 }
 
 export function Watermark({
   children,
   text = "DOCUMENT DE SIMULATION - NE PAS UTILISER COMME OFFICIEL",
+  className = "",
 }: WatermarkProps) {
   return (
-    <div className="relative w-full overflow-hidden">
+    <div className={`relative flex w-full flex-col overflow-hidden ${className}`}>
       <div
         title={text}
         className="bg-brand-accent-strong text-white font-bold text-center text-xs md:text-sm py-1.5 px-4 shadow-xs flex items-center justify-center gap-2 border-b border-brand-accent"
@@ -32,7 +34,7 @@ export function Watermark({
         <span>ENVIRONNEMENT DE SIMULATION — Les montants affichés n'ont aucune valeur légale</span>
       </div>
 
-      <div className="relative z-10 w-full">{children}</div>
+      <div className="relative z-10 flex w-full flex-1 flex-col">{children}</div>
     </div>
   )
 }

@@ -42,13 +42,18 @@ impl User {
             .duration_since(std::time::UNIX_EPOCH)?
             .as_secs();
 
+        let state = match role {
+            Role::Admin | Role::Partner => State::WaitingActivation,
+            _ => State::Active,
+        };
+
         Ok(Self {
             id,
             mail,
             name,
             password_hash,
             role,
-            state: State::WaitingActivation,
+            state,
             created_at,
             siren,
         })
