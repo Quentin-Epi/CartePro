@@ -1,16 +1,15 @@
 import { useState } from "react";
 
 import QRCodeComponent from "./QrCode";
+import { getUser } from "../auth";
 
 interface BankCardProps {
-  name: string;
-  firstname: string;
-  creation_date: string;
   paymentUrl: string;
 }
 
 export default function BankCard({ paymentUrl }: BankCardProps) {
   const [flipped, setFlipped] = useState(false);
+  const user = getUser();
 
   return (
     <div
@@ -35,10 +34,7 @@ export default function BankCard({ paymentUrl }: BankCardProps) {
           ${flipped ? "transform-[rotateY(180deg)]" : ""}
         `}
       >
-        {/* ================================= */}
         {/* RECTO */}
-        {/* ================================= */}
-
         <div
           className="
             absolute
@@ -123,7 +119,6 @@ export default function BankCard({ paymentUrl }: BankCardProps) {
               />
             </div>
 
-            {/* Logo à la place du numéro de carte */}
             <div className="m-16">
               {}
             </div>
@@ -148,7 +143,7 @@ export default function BankCard({ paymentUrl }: BankCardProps) {
                     text-[clamp(11px,3vw,16px)]
                   "
                 >
-                  NOM Prénom
+                  {user?.name ?? "Invité"}
                 </p>
               </div>
 
@@ -177,10 +172,7 @@ export default function BankCard({ paymentUrl }: BankCardProps) {
           </div>
         </div>
 
-        {/* ================================= */}
         {/* DOS */}
-        {/* ================================= */}
-
         <div
           className="
             absolute
