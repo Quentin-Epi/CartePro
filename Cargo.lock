@@ -740,27 +740,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "cartepro"
-version = "0.1.0"
-dependencies = [
- "actix",
- "actix-files",
- "actix-web",
- "actix-ws",
- "anyhow",
- "dotenvy",
- "env_logger",
- "futures-util",
- "log",
- "openssl",
- "sea-orm",
- "serde",
- "serde_json",
- "tokio",
- "uuid",
-]
-
-[[package]]
 name = "cc"
 version = "1.4.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3020,6 +2999,27 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 3.0.4",
+]
+
+[[package]]
+name = "tickettout"
+version = "0.1.0"
+dependencies = [
+ "actix",
+ "actix-files",
+ "actix-web",
+ "actix-ws",
+ "anyhow",
+ "dotenvy",
+ "env_logger",
+ "futures-util",
+ "log",
+ "openssl",
+ "sea-orm",
+ "serde",
+ "serde_json",
+ "tokio",
+ "uuid",
 ]
 
 [[package]]
