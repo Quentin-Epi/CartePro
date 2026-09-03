@@ -14,7 +14,7 @@ services:
       - target_cache:/app/target
     environment:
       SERVER_PORT: 8080
-      DATABASE_URL: postgres://tickettout:tickettout@postgres:5432/tickettout
+      DATABASE_URL: postgres://tickettout:${POSTGRES_PASSWORD}@postgres:5432/tickettout
       RUST_LOG: debug
     depends_on:
       postgres:
@@ -41,7 +41,7 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_USER: tickettout
-      POSTGRES_PASSWORD: tickettout
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: tickettout
     ports:
       - "5432:5432"
