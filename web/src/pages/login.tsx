@@ -1,6 +1,12 @@
+import { Navigate } from "react-router-dom"
+import { isLoggedIn } from "../auth"
 import { LoginForm } from "../components/login-form"
 
 export default function LoginPage() {
+  if (isLoggedIn()) {
+    return <Navigate to="/EmployeePages/balance" replace />
+  }
+
   return (
     <div className="flex min-h-svh flex-col bg-muted">
       <div className="flex flex-1 flex-col items-center justify-center p-6 pt-0 md:p-10 md:pt-0">
