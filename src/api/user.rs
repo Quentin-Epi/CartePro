@@ -2,7 +2,7 @@ use crate::{
     db::{get_one, update},
     entities::user::{self as User, Role},
 };
-use actix_web::{HttpRequest, HttpResponse, Responder, get, patch, web};
+use actix_web::{HttpRequest, HttpResponse, Responder, get, patch, post, web};
 use sea_orm::{
     ActiveModelTrait, ColumnTrait, DatabaseConnection, EntityTrait, IntoActiveModel, QueryFilter,
 };
@@ -62,7 +62,7 @@ pub struct PassRequest {
     pub password: String,
 }
 
-#[get("/user/pass")]
+#[post("/user/pass")]
 pub async fn pass(
     req: HttpRequest,
     body: web::Json<PassRequest>,
