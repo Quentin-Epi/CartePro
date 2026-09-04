@@ -12,8 +12,17 @@ export function getUser(): AuthUser | null {
     const raw = localStorage.getItem(STORAGE_KEY)
     return raw ? (JSON.parse(raw) as AuthUser) : null
   } catch {
-      console.error("error getting user");
+    console.error("error getting user");
     return null
+  }
+}
+
+export function getToken(): string | undefined {
+  try {
+    return getUser()?.id;
+  } catch {
+    console.error("error getting token");
+    return undefined;
   }
 }
 

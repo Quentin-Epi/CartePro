@@ -5,27 +5,22 @@ import { Field, FieldLabel } from "../components/ui/field";
 import { Input } from "../components/ui/input";
 import { Toaster } from "../components/ui/sonner";
 import { Trash2 } from "lucide-react";
-import { type AuthUser, getUser } from "../auth";
+import { type AuthUser, getToken } from "../auth";
 import { api } from "../api"
+import { hashPassword } from "../lib/hash";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "../components/ui/card";
 import "../assets/css/global.css";
 
-const [username, setUsername] = useState("");
-const [email, setEmail] = useState("");
-const [currentPassword, setCurrentPassword] = useState("");
-const [newPassword, setNewPassword] = useState("");
-const [confirmPassword, setConfirmPassword] = useState("");
-
-// Pour l'instant on utilise l'ID utilisateur comme token d'authentification,
-// plus tard il faudrait utiliser un vrai token JWT.
+// const DELETE_CONFIRM = "Supprimer mon compte";
 
 async function updatePassword(newPassword: string) {
   // hashed password
   try {
+    const hashedPassword = await hashPassword(newPassword);
     await api<AuthUser>("/user", {
       method: "PATCH",
-      headers: { "Content-Type": "application/json", "Authorization": String(getUser()?.id) },
-      body: JSON.stringify({ password: newPassword }),
+      headers: { "Content-Type": "application/json", "Authorization": String(getToken()) },
+      body: JSON.stringify({ password: hashedPassword }),
     });
   } catch (error) {
     console.error("Error while updating password:", error);
@@ -36,7 +31,7 @@ async function updateProfile(username: string, email: string) {
   try {
     await api<AuthUser>("/user", {
       method: "PATCH",
-      headers: { "Content-Type": "application/json", "Authorization": String(getUser()?.id) },
+      headers: { "Content-Type": "application/json", "Authorization": String(getToken()) },
       body: JSON.stringify({ name: username, mail: email }),
     });
   } catch (error) {
@@ -44,30 +39,59 @@ async function updateProfile(username: string, email: string) {
   }
 }
 
+// async function deleteProfile() {
+//   try {
+//     await api<AuthUser>("/user", {
+//       method: "DELETE",
+//       headers: { "Content-Type": "application/json", "Authorization": String(getToken()) },
+//     });
+//   } catch (error) {
+//     throw new Error(`Error while deleting profile: ${error}`);
+//   }
+// }
+
 const SettingsForm = () => {
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [deleteConfirm, setDeleteConfirm] = useState("");
 
   const saveProfile = async () => {
     if (newPassword == confirmPassword) {
       try {
         await updateProfile(username, email);
-        toast.success("Profile updated successfully");
+        toast.success("Profil mise à jour");
       } catch (error) {
-        console.error(error)
-        toast.error("Failed to update profile");
+        console.error(error);
+        toast.error("Impossible de mettre à jour le profil");
       }
     } else
-      toast.error("message")
+      toast.error("Erreur confirmation du mot passe");
   };
 
   const savePassword = async () => {
     try {
       await updatePassword(newPassword);
-      toast.success("Password updated successfully");
+      toast.success("Mot de passe mise à jour");
     } catch {
-      toast.error("Failed to update password");
+      toast.error("Impossible de mettre à jour le mot de passe");
     }
   };
+
+  // const deleteAccount = async (deleteConfirm: string) => {
+  //   if (deleteConfirm == DELETE_CONFIRM) {
+  //     try {
+  //       await deleteProfile();
+  //       toast.success("Compte supprimé");
+  //     } catch {
+  //       toast.error("Impossible de supprimer le compte");
+  //     }
+  //   } else {
+  //     toast.error("Vérification de suppression échouée")
+  //   };
+  // }
 
   return (
     <div className="flex w-full max-w-3xl flex-col items-center justify-center gap-6">
