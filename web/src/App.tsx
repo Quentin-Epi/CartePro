@@ -5,6 +5,7 @@ import Home from "./pages/home"
 import Login from "./pages/login"
 import Signup from "./pages/signup"
 import PartnerPaymentPage from "./pages/PartnerPages/payment"
+import PartnerScanPage from "./pages/PartnerPages/scan"
 import EmployeePaymentPage from "./pages/EmployeePages/payment"
 import EmployeeBalancePage from "./pages/EmployeePages/ballance"
 import EmployeePartnersPage from "./pages/EmployeePages/partners"
@@ -44,6 +45,10 @@ export default function App() {
         <Route
           path="/PartnerPages/payment"
           element={<RequireAuth><Header /><PartnerPaymentPage /></RequireAuth>}
+        />
+        <Route
+          path="/PartnerPages/scan"
+          element={<RequireAuth><Header /><PartnerScanPage /></RequireAuth>}
         />
         <Route path="*" element={<><Navigate to="/" replace /></>} />
       </Routes>
