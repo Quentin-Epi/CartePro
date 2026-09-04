@@ -29,7 +29,7 @@ CREATE TABLE partner (
   highlight BOOL,
   highlight_text VARCHAR(255),
   verification BOOL,
-  category VARCHAR(255),
+  category VARCHAR(255)
 );
 
 CREATE TABLE admin (
@@ -42,5 +42,5 @@ CREATE TABLE transaction (
   success BOOL,
   value REAL,
   partner_id UUID REFERENCES partner(id),
-  employee_id UUID REFERENCES employee(id),
+  employee_id UUID REFERENCES employee(id)
 ) 

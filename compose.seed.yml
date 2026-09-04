@@ -1,0 +1,36 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tickettout
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      DATABASE_URL: postgres://tickettout:${POSTGRES_PASSWORD}@postgres:5432/tickettout
+      RUST_LOG: info
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  postgres:
+    image: postgres:18
+    container_name: tickettout-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: tickettout
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: tickettout
+    volumes:
+      - postgres_prod_data:/var/lib/postgresql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - ./seed.sql:/docker-entrypoint-initdb.d/seed.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tickettout -d tickettout"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  postgres_prod_data:
