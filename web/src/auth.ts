@@ -1,7 +1,3 @@
-// Session utilisateur minimale : on stocke l'UID (+ infos publiques) renvoyé
-// par /auth/login dans le localStorage et on s'en sert comme "token" pour
-// rester connecté entre les visites.
-
 export type AuthUser = {
   id: string
   mail: string

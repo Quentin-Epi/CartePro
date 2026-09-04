@@ -2,6 +2,7 @@ import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { cn } from "../lib/utils"
 import { api } from "../api"
+import { hashPassword } from "../lib/hash"
 import { setUser, type AuthUser } from "../auth"
 import { Button } from "../components/ui/button"
 import {
@@ -41,7 +42,7 @@ export function LoginForm({
       const user = await api<AuthUser>("/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mail, password }),
+        body: JSON.stringify({ mail, password: await hashPassword(password) }),
       })
 
       setUser(user)
@@ -106,7 +107,7 @@ export function LoginForm({
                   {loading ? "Connexion…" : "Se connecter"}
                 </Button>
                 <FieldDescription className="text-center">
-                  Vous n&apos;avez pas de compte ?{" "}
+                  Vous n'avez pas de compte ?{" "}
                   <Link to="/signup" className="underline font-medium text-primary">
                     Créer un compte
                   </Link>

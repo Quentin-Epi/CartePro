@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { api } from "../api"
+import { hashPassword } from "../lib/hash"
 import { Button } from "./ui/button"
 import {
   Card,
@@ -34,7 +35,6 @@ function isValidSiren(value: string): boolean {
   const digits = value.replace(/\D/g, "")
   if (digits.length !== 9) return false
 
-  // Validation Luhn (norme SIREN)
   let sum = 0
   for (let i = 0; i < 9; i++) {
     let n = Number(digits[i])
@@ -56,6 +56,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
   const [siren, setSiren] = useState("")
+  const [social_object, setSocial_object] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 
@@ -84,8 +85,10 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
         body: JSON.stringify({
           mail,
           name,
-          password,
+          password: await hashPassword(password),
           role,
+          siren: role === "Partner" ? Number(siren) : undefined,
+          social_object: role === "Partner" ? social_object : undefined,
         }),
       })
 
@@ -100,9 +103,9 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
   return (
     <Card {...props}>
       <CardHeader>
-        <CardTitle>Create an account</CardTitle>
+        <CardTitle>Créer un compte</CardTitle>
         <CardDescription>
-          Enter your information below to create your account
+          Renseignez vos informations ci-dessous pour créer votre compte
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -155,59 +158,80 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
               </div>
             </FieldSet>
             {role === "Partner" && (
-              <Field>
-                <FieldLabel htmlFor="siren">SIREN</FieldLabel>
-                <Input
-                  id="siren"
-                  type="text"
-                  inputMode="numeric"
-                  autoComplete="off"
-                  placeholder="123456789"
-                  maxLength={9}
-                  value={siren}
-                  onChange={(e) =>
-                    setSiren(e.target.value.replace(/\D/g, "").slice(0, 9))
-                  }
-                  aria-invalid={sirenInvalid}
-                  required
-                />
-                {sirenInvalid ? (
-                  <FieldError>Le SIREN saisi n&apos;est pas valide.</FieldError>
-                ) : (
+              <>
+                <Field>
+                  <FieldLabel htmlFor="siren">SIREN</FieldLabel>
+                  <Input
+                    id="siren"
+                    type="text"
+                    inputMode="numeric"
+                    autoComplete="off"
+                    placeholder="123456789"
+                    maxLength={9}
+                    value={siren}
+                    onChange={(e) =>
+                      setSiren(e.target.value.replace(/\D/g, "").slice(0, 9))
+                    }
+                    aria-invalid={sirenInvalid}
+                    required
+                  />
+                  {sirenInvalid ? (
+                    <FieldError>Le SIREN saisi n'est pas valide.</FieldError>
+                  ) : (
+                    <FieldDescription>
+                      Numéro SIREN à 9 chiffres de votre entreprise.
+                    </FieldDescription>
+                  )}
+                </Field>
+                <Field>
+                  <FieldLabel htmlFor="social-object">Objet social</FieldLabel>
+                  <Input
+                    id="social-object"
+                    type="text"
+                    placeholder="Objet social"
+                    maxLength={255}
+                    value={social_object}
+                    onChange={(e) =>
+                      setSocial_object(e.target.value)
+                    }
+                    required
+                  />
                   <FieldDescription>
-                    Numéro SIREN à 9 chiffres de votre entreprise.
+                    Objet social de votre entreprise.
                   </FieldDescription>
-                )}
-              </Field>
+                </Field>
+              </>
             )}
             <Field>
-              <FieldLabel htmlFor="name">Full Name</FieldLabel>
+              <FieldLabel htmlFor="name">
+                {role === "Partner" ? "Nom de l'entreprise" : "Nom complet"}
+              </FieldLabel>
               <Input
                 id="name"
                 type="text"
-                placeholder="John Doe"
+                placeholder={role === "Partner" ? "Ma Société SARL" : "Jean Dupont"}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
               />
             </Field>
             <Field>
-              <FieldLabel htmlFor="email">Email</FieldLabel>
+              <FieldLabel htmlFor="email">E-mail</FieldLabel>
               <Input
                 id="email"
                 type="email"
-                placeholder="m@example.com"
+                placeholder="jean@exemple.com"
                 value={mail}
                 onChange={(e) => setMail(e.target.value)}
                 required
               />
               <FieldDescription>
-                We&apos;ll use this to contact you. We will not share your email
-                with anyone else.
+                Nous l'utiliserons pour vous contacter. Votre adresse ne sera
+                jamais partagée.
               </FieldDescription>
             </Field>
             <Field>
-              <FieldLabel htmlFor="password">Password</FieldLabel>
+              <FieldLabel htmlFor="password">Mot de passe</FieldLabel>
               <Input
                 id="password"
                 type="password"
@@ -216,32 +240,33 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                 required
               />
               <FieldDescription>
-                Must be at least 8 characters long.
+                Au moins 8 caractères.
               </FieldDescription>
             </Field>
             <Field>
               <FieldLabel htmlFor="confirm-password">
-                Confirm Password
+                Confirmer le mot de passe
               </FieldLabel>
               <Input
                 id="confirm-password"
                 type="password"
                 value={confirmPassword}
+                minLength={8}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
               />
-              <FieldDescription>Please confirm your password.</FieldDescription>
+              <FieldDescription>Veuillez confirmer votre mot de passe.</FieldDescription>
             </Field>
             {error && <FieldError>{error}</FieldError>}
             <FieldGroup>
               <Field>
                 <Button type="submit" disabled={loading}>
-                  {loading ? "Création…" : "Create Account"}
+                  {loading ? "Création…" : "Créer le compte"}
                 </Button>
                 <FieldDescription className="text-center">
-                  Don&apos;t have an account?{" "}
+                  Vous avez déjà un compte ?{" "}
                   <Link to="/login" className="underline font-medium text-primary">
-                    Sign in
+                    Se connecter
                   </Link>
                 </FieldDescription>
               </Field>
