@@ -11,6 +11,7 @@ pub fn configure(cfg: &mut web::ServiceConfig) {
             .service(health::health)
             .service(echo::echo)
             .service(user::get)
+            .service(user::pass)
             .service(user::put)
             .configure(auth::configure),
     );
