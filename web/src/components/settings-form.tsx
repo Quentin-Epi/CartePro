@@ -5,18 +5,68 @@ import { Field, FieldLabel } from "../components/ui/field";
 import { Input } from "../components/ui/input";
 import { Toaster } from "../components/ui/sonner";
 import { Trash2 } from "lucide-react";
+import { type AuthUser, getUser } from "../auth";
+import { api } from "../api"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "../components/ui/card";
 import "../assets/css/global.css";
+
+const [username, setUsername] = useState("");
+const [email, setEmail] = useState("");
+const [currentPassword, setCurrentPassword] = useState("");
+const [newPassword, setNewPassword] = useState("");
+const [confirmPassword, setConfirmPassword] = useState("");
+
+// Pour l'instant on utilise l'ID utilisateur comme token d'authentification,
+// plus tard il faudrait utiliser un vrai token JWT.
+
+async function updatePassword(newPassword: string) {
+  // hashed password
+  try {
+    await api<AuthUser>("/user", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json", "Authorization": String(getUser()?.id) },
+      body: JSON.stringify({ password: newPassword }),
+    });
+  } catch (error) {
+    console.error("Error while updating password:", error);
+  }
+}
+
+async function updateProfile(username: string, email: string) {
+  try {
+    await api<AuthUser>("/user", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json", "Authorization": String(getUser()?.id) },
+      body: JSON.stringify({ name: username, mail: email }),
+    });
+  } catch (error) {
+    throw new Error(`Error while updating profile: ${error}`);
+  }
+}
 
 const SettingsForm = () => {
   const [deleteConfirm, setDeleteConfirm] = useState("");
 
-  const saveProfile = () => {
-    toast.success("Profile updated successfully");
+  const saveProfile = async () => {
+    if (newPassword == confirmPassword) {
+      try {
+        await updateProfile(username, email);
+        toast.success("Profile updated successfully");
+      } catch (error) {
+        console.error(error)
+        toast.error("Failed to update profile");
+      }
+    } else
+      toast.error("message")
   };
 
-  const updatePassword = () => {
-    toast.success("Password updated successfully");
+  const savePassword = async () => {
+    try {
+      await updatePassword(newPassword);
+      toast.success("Password updated successfully");
+    } catch {
+      toast.error("Failed to update password");
+    }
   };
 
   return (
@@ -49,6 +99,8 @@ const SettingsForm = () => {
               <Input
                 id="username"
                 placeholder="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 className="w-full"
               />
             </Field>
@@ -65,6 +117,8 @@ const SettingsForm = () => {
                 id="email"
                 type="email"
                 placeholder="exemple@gmail.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="w-full"
               />
             </Field>
@@ -114,6 +168,8 @@ const SettingsForm = () => {
                 id="current-password"
                 type="password"
                 placeholder="••••••••"
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
                 className="w-full"
               />
             </Field>
@@ -132,6 +188,8 @@ const SettingsForm = () => {
                 id="new-password"
                 type="password"
                 placeholder="••••••••"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
                 className="w-full"
               />
             </Field>
@@ -148,6 +206,8 @@ const SettingsForm = () => {
                 id="confirm-password"
                 type="password"
                 placeholder="••••••••"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
                 className="w-full"
               />
             </Field>
@@ -155,7 +215,7 @@ const SettingsForm = () => {
         </CardContent>
 
         <CardFooter className="flex justify-end">
-          <Button onClick={updatePassword}>
+          <Button onClick={savePassword}>
             Mettre à jour
           </Button>
         </CardFooter>
